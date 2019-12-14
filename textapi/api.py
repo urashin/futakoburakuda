@@ -6,4 +6,7 @@ app = Flask(__name__)
 def transform():
     content = request.json
     text = content['text']
+
+    # テキストデータを変換する処理
+
     return jsonify({"text": text})

@@ -16,7 +16,8 @@ def transform():
 
     # テキストデータを変換する処理
     trans = Translator()
-    translated_text = trans.translate(text)
+    translated_text = trans.translate(text)['key']
+    print(translated_text)
 
     return jsonify({"text": translated_text})
 

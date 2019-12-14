@@ -40,11 +40,14 @@ class create_image:
 
 	def smile(self,objs):
 		if 'スマイル' in objs:
+			print('スマイル')
 			return 'smile'
 		return ''
 
 	def table(self,objs):
-		if 'テーブル' in objs:
+		#if 'テーブル' in objs:
+		if '座ってる' in objs:
+			print('座ってる')
 			return 'table'
 		return ''
 
@@ -55,19 +58,23 @@ class create_image:
 
 	def standing(self,objs):
 		for obj in objs:
-			if '座って' in obj:
+			if '座ってる' in obj:
 				return 'sitting'
 		return 'standing'
 
 	def objects(self,objs):
-		countables = ['食べ物','画面', '犬']
+		pets= ['犬','猫']
+		#countables = ['食べ物','画面', '犬','猫']
+		countables = ['食べ物','画面']
 		middles = ['家', 'ビル', '木', '植物']
 		backgrounds1 = ['海', '山', '空', '屋外', '室内']
 		backgrounds2 = ['屋外', '室内']
-		objects = {'countables':[], 'middles':[], 'backgrounds':[]}
+		objects = {'countables':[], 'pets':[], 'middles':[], 'backgrounds':[]}
 		for obj in objs:
 			if  obj in countables:
 				objects['countables'].append(obj)
+			elif obj in pets:
+				objects['pets'].append(obj)
 			elif obj in middles:
 				objects['middles'].append(obj)
 			elif obj in backgrounds1:
@@ -187,6 +194,7 @@ class create_image:
 		base = self.draw_images(objs['objects']['middles'], base, 0, 0)
 		base = self.draw_images(objs['objects']['countables'], base, 0, 0)
 		base = self.draw_persons(objs['persons'], base)
+		base = self.draw_images(objs['objects']['pets'], base, 0,0)
 		# blended = cv2.addWeighted(src1=base,alpha=0.7,src2=images[obj],beta=0.3,gamma=0)
 		cv2.imwrite(file_path, base)
 

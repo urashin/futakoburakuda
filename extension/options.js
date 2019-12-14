@@ -15,9 +15,7 @@ function save_options() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-    chrome.storage.sync.get({
-        filterMode: 'default',
-    }, function (items) {
+    chrome.storage.sync.get([filterMode], function (items) {
         document.getElementById('mode').value = items.filterMode;
     });
 }

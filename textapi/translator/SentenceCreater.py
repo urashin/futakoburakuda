@@ -55,9 +55,9 @@ class SentenceCreater:
             return self.default_dic
     
     def _judege_tension(self, magnitude):
-        if magnitude >= 3: 
+        if magnitude >= 1: 
             return "high"
-        elif magnitude >= 1:
+        elif magnitude >= 0.5:
             return "mid"
         else:
             return "low"

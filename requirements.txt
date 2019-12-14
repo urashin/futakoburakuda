@@ -18,3 +18,5 @@ pytz==2018.4
 six==1.13.0
 traitlets==4.3.3
 wcwidth==0.1.7
+zenhan==0.5.2
+nltk==3.4.5

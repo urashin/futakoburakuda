@@ -5,8 +5,8 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 from enum import Enum
-from model.Phrase import Phrase
-from model.Entity import Entity
+from translator.model.Phrase import Phrase
+from translator.model.Entity import Entity
 
 class Result:
     """

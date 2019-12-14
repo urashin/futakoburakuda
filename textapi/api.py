@@ -6,6 +6,7 @@ from translator.Translator import Translator
 app = Flask(__name__)
 CORS(app)
 
+trans = Translator()
 
 @app.route("/transform", methods=["POST"])
 def transform():
@@ -15,8 +16,7 @@ def transform():
     print(text)
 
     # テキストデータを変換する処理
-    trans = Translator()
-    translated_text = trans.translate(text)
+    translated_text = trans.translate(text, type='jk')
     print(translated_text)
 
     if len(translated_text) == 0:

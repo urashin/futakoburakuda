@@ -7,10 +7,6 @@ from google.cloud.language import types
 from enum import Enum
 from model.Phrase import Phrase
 
-class Emotion(Enum):
-    P = 0
-    N = 1
-
 class Result:
     """
     attributes
@@ -26,15 +22,10 @@ class Result:
 
 class GoogleExtractor:
     """
-    attributes
-    ----------
-    sort_method: 何順で結果を返すか
-        salience -> 文の関連度
-        score -> 文章全体の感情値
+    GoogleのAPIを使ってフレーズと抽出する
     """
-    def __init__(self, sort_method="salience"):
+    def __init__(self,):
         self.client = language.LanguageServiceClient()
-        self.sort_method = sort_method
         self.result = None
     
     ## googleへのリクエスト
@@ -64,7 +55,7 @@ class GoogleExtractor:
 
     def _ex_pharase_emotion(self, score, result):
         """
-        posi, negaのち買い物だけ，entityを絞り込む
+        posi, negaの近い物だけ，entityを絞り込む
         """
         if score >= 0:
             entities = [entity for entity in result.entities if entity.sentiment.score >= 0]
@@ -113,9 +104,9 @@ if __name__ == '__main__':
     text = """
     今日は美味しいラーメンを食べれて幸せでした．
     """
-    g = GoogleExtractor(sort_method="score")
-    result = g.get_phrase(text)
+    g = GoogleExtractor()
+    phrase = g.get_phrase(text)
 
-    print(result.score)
-    print(result.magnitude)
-    print(result.entity)
+    print(phrase.score)
+    print(phrase.magnitude)
+    print("{}".format(phrase.entity_dic))

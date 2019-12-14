@@ -3,8 +3,6 @@ import pke
 import ginza
 import nltk
 
-
-
 class KeyPharaseExtractor:
     def __init__(self, ex_type="multi"):
         ## pkeを使うための初期化処理

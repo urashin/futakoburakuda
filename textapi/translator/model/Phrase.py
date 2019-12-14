@@ -5,7 +5,7 @@ class Phrase:
     attributes
     ----------
     score: float
-        ポジネがスコア(-1 ~ 1)
+        ポジネガスコア(-1 ~ 1)
     magnitude: float
         感情の大きさ
     entity_dic: dic

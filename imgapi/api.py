@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import hashlib
+import pathlib
+import os
 from create_image import *
 
 app = Flask(__name__)
@@ -23,7 +25,11 @@ def transform():
     crt_img = create_image()
     crt_img.create(alts, img_path)
 
-    return jsonify({"imgPath": img_path})
+    p = pathlib.Path(img_path)
+    resolved_path = p.resolve()
+    print(resolved_path)
+
+    return jsonify({"imgPath": str(resolved_path)})
 
 
 def parse_alt(alt):

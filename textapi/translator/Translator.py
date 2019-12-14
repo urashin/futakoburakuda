@@ -1,8 +1,8 @@
 import codecs
-from KeyPhraseExtractor import KeyPharaseExtractor
-from Preprocess import Preprocess
-from GoogleExtractor import GoogleExtractor
-from SentenceCreater import SentenceCreater
+from translator.KeyPhraseExtractor import KeyPharaseExtractor
+from translator.Preprocess import Preprocess
+from translator.GoogleExtractor import GoogleExtractor
+from translator.SentenceCreater import SentenceCreater
 
 class Translator:
     def __init__(self,):

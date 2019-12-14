@@ -1,10 +1,10 @@
 # Imports the Google Cloud client library
 import six
 import sys
-
 from GoogleApiClient import GoogleApiClient
-from model.Phrase import Phrase
-from model.Entity import Entity
+from translator.model.Phrase import Phrase
+from translator.model.Entity import Entity
+
 
 class Result:
     """
@@ -14,15 +14,18 @@ class Result:
     magnitude: 感情の大きさ
     entities: 抜き出したentity
     """
+
     def __init__(self, score, magnitude, entities):
         self.score = score
         self.magnitude = magnitude
         self.entities = entities
 
+
 class GoogleExtractor:
     """
     GoogleのAPIを使ってフレーズと抽出する
     """
+
     def __init__(self,):
         self.client = GoogleApiClient()
         self.result = None
@@ -33,10 +36,12 @@ class GoogleExtractor:
         """
         entities = []
         if score >= 0:
-            entities = [entity for entity in result.entities if entity.sentiment.score >= 0]
+            entities = [
+                entity for entity in result.entities if entity.sentiment.score >= 0]
         else:
-            entities = [entity for entity in result.entities if entity.sentiment.score < 0]
-        
+            entities = [
+                entity for entity in result.entities if entity.sentiment.score < 0]
+
         if entities:
             return entities
         else:
@@ -61,12 +66,14 @@ class GoogleExtractor:
 
         pn_entity = None
         if pn_score >= 0:
-            pn_entity = [entity for entity in sorted(entities, key=lambda x:x.sentiment.score, reverse=True)][0]
+            pn_entity = [entity for entity in sorted(
+                entities, key=lambda x:x.sentiment.score, reverse=True)][0]
         else:
-            pn_entity = [entity for entity in sorted(entities, key=lambda x:x.sentiment.score)][0]
-        
+            pn_entity = [entity for entity in sorted(
+                entities, key=lambda x:x.sentiment.score)][0]
+
         return salience_entity, pn_entity
-    
+
     def get_phrase(self, sentence):
         # フレーズを抽出する
         self._get_phrase(sentence)
@@ -80,6 +87,7 @@ class GoogleExtractor:
                 "pn": Entity(pn_entity.name, pn_entity.sentiment.score, pn_entity.sentiment.magnitude)}
 
         return Phrase(self.result.score, self.result.magnitude, entity)
+
 
 if __name__ == '__main__':
     text = """

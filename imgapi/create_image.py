@@ -129,6 +129,8 @@ class create_image:
 			if not os.path.isfile(file):
 				print(f"{obj} not found\n")
 				return base
+			images[obj] = cv2.resize(images[obj], (base.shape[1], base.shape[0]))
+			print(f"{images[obj].shape[1]}, {images[obj][0]}")
 			#images[obj] = cv2.cvtColor(images[obj], cv2.COLOR_BGR2RGB)
 			masked = self.get_masked(images[obj], base)
 			base = self.merge(base, masked, x, y)
@@ -172,6 +174,7 @@ class create_image:
 			print(f"{img_name} not found\n")
 			return base
 		person_img = cv2.imread(img_name)
+		person_img = cv2.resize(person_img, (base.shape[1], base.shape[0]))
 		masked = self.get_masked(person_img, base)
 		base = self.merge(base, masked, 0, 0)
 

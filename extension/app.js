@@ -83,9 +83,9 @@ function sleep(msec) {
 function changeImage(posts) {
   posts.forEach(item => {
     const insert = (res) => {
-      const changed = res.imgPath;
+      const transratedImageName = res.imgName;
       // TODO: まだ動かない。ローカルサーバーのパスを返して欲しい
-      item.image.items.map(x => x.src = changed);
+      item.image.items.map(x => x.src = `http://localhost:8081/img/${transratedImageName}`);
     };
     item.image.data.forEach(data => {
       chrome.runtime.sendMessage(

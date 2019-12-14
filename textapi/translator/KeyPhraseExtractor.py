@@ -2,6 +2,9 @@ import nltk
 import pke
 import ginza
 import nltk
+from GoogleApiClient import GoogleApiClient
+from model.Entity import Entity
+from model.Phrase import Phrase
 
 class KeyPharaseExtractor:
     def __init__(self, ex_type="multi"):
@@ -14,6 +17,7 @@ class KeyPharaseExtractor:
 
         ## attributes
         self.ex_type = ex_type
+        self.client = GoogleApiClient()
     
     def create_extractor(self, sentence):
         if self.ex_type == "multi":
@@ -21,7 +25,7 @@ class KeyPharaseExtractor:
             extractor.load_document(input=sentence, language='ja_ginza', normalization=None)
             # 抽出する品詞の指定
             # propn: 固有名詞
-            extractor.candidate_selection(pos={'NOUN', 'PROPN'})
+            extractor.candidate_selection(pos={'NOUN', 'PROPN', 'ADJ'})
             # 重みの指定(デフォルト値になっている)
             extractor.candidate_weighting(threshold=0.74, method='average', alpha=1.1)
             return extractor
@@ -56,7 +60,7 @@ class KeyPharaseExtractor:
         フレーズの中から最もらしいものを抜き出す処理
         """
         # とりあえずスコアが最大値のもの1つを返す
-        return phrases[0][0].replace(" ", "")
+        return phrases[0][0].replace(" ", "").rstrip("\n")
     
     def extract_sentence(self, phrase, sentence):
         """
@@ -68,11 +72,23 @@ class KeyPharaseExtractor:
                 output += line + "\n"
         return output
 
-    def translate(self, sentence):
+    def get_phrase(self, sentence):
+       # キーフレーズ抽出
        phrases = self.get_phrases(sentence) 
        phrase = self.filter_phrase(phrases)
-       self.extract_sentence(phrase, sentence)
+       # 文章を抽出する
+       sentence = self.extract_sentence(phrase, sentence)
+
+       # googleのAPIを叩いてポジネが判定
+       result = self.client.sentence_posi_nega(sentence)
+       entity_dic = {"key": Entity(phrase, 0.0, 0.0)}
+
+       return Phrase(result.score, result.magnitude, entity_dic)
 
 if __name__ == '__main__':
     k =KeyPharaseExtractor(ex_type="multi")
-    k.translate("パンおいしい")
+    phrase = k.get_phrase("パンおいしい")
+
+    print(phrase.score)
+    print(phrase.magnitude)
+    print("{}".format(phrase.entity_dic))

@@ -6,15 +6,17 @@ from SentenceCreater import SentenceCreater
 
 class Translator:
     def __init__(self,):
-        # self.extractor = KeyPharaseExtractor(ex_type="position")
-        self.extractor =  GoogleExtractor()
+        self.key_extractor = KeyPharaseExtractor()
+        self.google_extractor =  GoogleExtractor()
         self.preprocess = Preprocess()
         self.creater =  SentenceCreater()
 
     def translate(self, post):
         post = self.preprocess.exec(post)
-        phrase = self.extractor.get_phrase(post)
-        sentence_dic = self.creater.create(phrase)
+        google_phrase = self.google_extractor.get_phrase(post)
+        sentence_dic = self.creater.create(google_phrase)
+        key_phrase = self.key_extractor.get_phrase(post)
+        sentence_dic.update(self.creater.create(key_phrase))
 
         return sentence_dic
 

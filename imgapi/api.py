@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import hashlib
+from . import create_image
 
 app = Flask(__name__)
 CORS(app)
@@ -18,6 +19,9 @@ def transform():
 
     file_path = generate_file_path(url)
     print(file_path)
+
+    crt_img = create_image()
+    crt_img.create(alts, file_path)
 
     # TODO: ファイル名、属性ワードを画像生成ライブラリに渡して生成画像のパスを受け取る
     img_path = "hoge"

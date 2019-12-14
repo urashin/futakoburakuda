@@ -21,6 +21,6 @@ def transform():
 
 
 def parse_alt(alt):
-    alt.lstrip('画像に含まれている可能性があるもの:')
-    alts = alt.split(',')
+    print(alt)
+    alts = alt.replace("画像に含まれている可能性があるもの:", "").split('、')
     return alts

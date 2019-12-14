@@ -76,8 +76,9 @@ class create_image:
 			if obj in backgrounds2:
 				if len(objects['backgrounds']) == 0:
 					objects['backgrounds'].append(obj)
-		if len(objects['backgrounds']) == 0:
-			objects['backgrounds'].append('海')
+		for obj in objs:
+			if obj == '食べ物' and len(objs) != 1:
+				objects['countables'].remove('食べ物')
 		return objects
 
 	def create_text_list(self,text):
@@ -130,7 +131,7 @@ class create_image:
 				print(f"{obj} not found\n")
 				return base
 			images[obj] = cv2.resize(images[obj], (base.shape[1], base.shape[0]))
-			print(f"{images[obj].shape[1]}, {images[obj][0]}")
+			#print(f"{images[obj].shape[1]}, {images[obj][0]}")
 			#images[obj] = cv2.cvtColor(images[obj], cv2.COLOR_BGR2RGB)
 			masked = self.get_masked(images[obj], base)
 			base = self.merge(base, masked, x, y)
@@ -140,25 +141,24 @@ class create_image:
 		#backgrounds = ['海', '山', '空', '屋外', '室内']
 		bg1 = ['海', '山', '空']
 		name = ""
+		default ="images/white.png"
 		if len(objs) == 1:
 			name = f"images/{objs[0]}.png"
 			if not os.path.isfile(name):
-				name = "images/海.png"
+				name = default
 		elif len(objs) == 2:
 			name = f"{objs[0]}{objs[1]}.png"
 			if not os.path.isfile(name):
 				name = f"{objs[1]}{objs[0]}.png"
 				if not os.path.isfile(name):
-					name = "images/海.png"
+					name = default
 		elif len(objs) == 3:
 			name = 'images/海山空.png'
 			if not os.path.isfile(name):
-				name = "images/海.png"
+				name = default
 		else:
-			name = "images/海.png"
+			name = default
 		base = cv2.imread(name)
-		#base = cv2.imread("images/base.jpg") # とりあえずきめうち
-		#base = cv2.cvtColor(base, cv2.COLOR_BGR2RGB)
 		return base
 
 	def draw_persons(self,persons, base):
@@ -194,7 +194,7 @@ class create_image:
 		# alt text のパース
 		#images = self.analyze_list(tag_list)
 		images = self.analyze_list(tag_list)
-		print(images)
+		#print(images)
 
 		# merge 処理
 		self.obaka_merge(images,file_path)

@@ -11,14 +11,18 @@ class Translator:
         self.preprocess = Preprocess()
         self.creater =  SentenceCreater()
 
-    def translate(self, post):
+    def translate(self, post, type='default'):
         post = self.preprocess.exec(post)
         google_phrase = self.google_extractor.get_phrase(post)
         sentence_dic = self.creater.create(google_phrase)
         key_phrase = self.key_extractor.get_phrase(post)
         sentence_dic.update(self.creater.create(key_phrase))
 
-        return sentence_dic
+        return self.choiceOne(sentence_dic)
+    
+    def choiceOne(self, sentence_dic):
+        return sentence_dic['key']
+
 
     def translate_file(self, filename="", sep="\n"):
         with codecs.open(filename, "r", "utf-8") as f:

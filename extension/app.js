@@ -103,7 +103,7 @@ function changeText(posts) {
   posts.forEach(item => {
     const insert = (res) => {
       if(res) {
-        const changed = 'modified: ' + res.text;
+        const changed = res.text;
         item.text.items.map(x => x.innerText = changed);
       }
     };

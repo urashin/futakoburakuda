@@ -1,7 +1,7 @@
 # Imports the Google Cloud client library
 import six
 import sys
-from GoogleApiClient import GoogleApiClient
+from translator.GoogleApiClient import GoogleApiClient
 from translator.model.Phrase import Phrase
 from translator.model.Entity import Entity
 

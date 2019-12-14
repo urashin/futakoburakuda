@@ -62,17 +62,22 @@ class create_image:
 	def objects(self,objs):
 		countables = ['食べ物','画面', '犬']
 		middles = ['家', 'ビル', '木', '植物']
-		backgrounds = ['海', '山', '空', '屋外', '室内']
+		backgrounds1 = ['海', '山', '空', '屋外', '室内']
+		backgrounds2 = ['屋外', '室内']
 		objects = {'countables':[], 'middles':[], 'backgrounds':[]}
 		for obj in objs:
 			if  obj in countables:
 				objects['countables'].append(obj)
 			elif obj in middles:
 				objects['middles'].append(obj)
-			elif obj in backgrounds:
+			elif obj in backgrounds1:
 				objects['backgrounds'].append(obj)
+		for obj in objs:
+			if obj in backgrounds2:
+				if len(objects['backgrounds']) == 0:
+					objects['backgrounds'].append(obj)
 		if len(objects['backgrounds']) == 0:
-			objects['backgrounds'].append('default')
+			objects['backgrounds'].append('海')
 		return objects
 
 	def create_text_list(self,text):
@@ -125,11 +130,31 @@ class create_image:
 				print(f"{obj} not found\n")
 				return base
 			#images[obj] = cv2.cvtColor(images[obj], cv2.COLOR_BGR2RGB)
-			base = merge(base, images[obj], x, y)
+			masked = self.get_masked(images[obj], base)
+			base = self.merge(base, masked, x, y)
 		return base
 
 	def draw_backgrounds(self,objs):
-		base = cv2.imread(f"images/{objs[0]}.png") # とりあえずきめうち
+		#backgrounds = ['海', '山', '空', '屋外', '室内']
+		bg1 = ['海', '山', '空']
+		name = ""
+		if len(objs) == 1:
+			name = f"images/{objs[0]}.png"
+			if not os.path.isfile(name):
+				name = "images/海.png"
+		elif len(objs) == 2:
+			name = f"{objs[0]}{objs[1]}.png"
+			if not os.path.isfile(name):
+				name = f"{objs[1]}{objs[0]}.png"
+				if not os.path.isfile(name):
+					name = "images/海.png"
+		elif len(objs) == 3:
+			name = 'images/海山空.png'
+			if not os.path.isfile(name):
+				name = "images/海.png"
+		else:
+			name = "images/海.png"
+		base = cv2.imread(name)
 		#base = cv2.imread("images/base.jpg") # とりあえずきめうち
 		#base = cv2.cvtColor(base, cv2.COLOR_BGR2RGB)
 		return base
@@ -142,9 +167,11 @@ class create_image:
 		if int(persons['num']) > 5:
 			persons['num'] = 5
 		img_name = f"images/{persons['num']}_{persons['closeup']}_{persons['pose']}_{persons['smile']}_{persons['table']}_persons.png"
-		print(img_name)
+		print(f"opening {img_name}...")
+		if not os.path.isfile(img_name):
+			print(f"{img_name} not found\n")
+			return base
 		person_img = cv2.imread(img_name)
-
 		masked = self.get_masked(person_img, base)
 		base = self.merge(base, masked, 0, 0)
 
@@ -159,6 +186,7 @@ class create_image:
 		base = self.draw_persons(objs['persons'], base)
 		# blended = cv2.addWeighted(src1=base,alpha=0.7,src2=images[obj],beta=0.3,gamma=0)
 		cv2.imwrite(file_path, base)
+
 	def create(self,tag_list,file_path):
 		# alt text のパース
 		#images = self.analyze_list(tag_list)

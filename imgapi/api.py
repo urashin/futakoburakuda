@@ -17,14 +17,11 @@ def transform():
     alts = parse_alt(alt)
     print(alts)
 
-    file_path = generate_file_path(url)
-    print(file_path)
+    img_path = generate_file_path(url)
+    print(img_path)
 
     crt_img = create_image()
-    crt_img.create(alts, file_path)
-
-    # TODO: ファイル名、属性ワードを画像生成ライブラリに渡して生成画像のパスを受け取る
-    img_path = "hoge"
+    crt_img.create(alts, img_path)
 
     return jsonify({"imgPath": img_path})
 

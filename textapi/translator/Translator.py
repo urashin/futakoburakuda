@@ -16,9 +16,9 @@ class Translator:
     def translate(self, post, type='default'):
         post = self.preprocess.exec(post)
         google_phrase = self.google_extractor.get_phrase(post)
-        sentence_dic = self.creater.create(google_phrase)
+        sentence_dic = self.creater.create(google_phrase, type)
         key_phrase = self.key_extractor.get_phrase(post)
-        sentence_dic.update(self.creater.create(key_phrase))
+        sentence_dic.update(self.creater.create(key_phrase, type))
 
         return self.choiceOne(sentence_dic)
     

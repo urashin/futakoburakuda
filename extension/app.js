@@ -84,8 +84,8 @@ function changeImage(posts) {
   posts.forEach(item => {
     const insert = (res) => {
       const changed = res.imgPath;
-      // TODO: まだパスが返ってこないのでalt変えてみる。ちゃんと結合したらsrcを変える
-      item.image.items.map(x => x.alt = changed);
+      // TODO: まだ動かない。ローカルサーバーのパスを返して欲しい
+      item.image.items.map(x => x.src = changed);
     };
     item.image.data.forEach(data => {
       chrome.runtime.sendMessage(

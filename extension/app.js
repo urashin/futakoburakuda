@@ -1,7 +1,7 @@
 "use strict";
 
 const POST_QUERY = '.userContentWrapper';
-const MESSAGE_QUERY = '.userContent';
+const MESSAGE_QUERY = '[data-testid="post_message"]'; //'.userContent';
 const IMAGE_QUERY = 'img.scaledImageFitWidth'
 
 function getFetchedPosts(callback) {
@@ -24,6 +24,7 @@ function getFetchedPosts(callback) {
   observer.observe(target, {childList: true, subtree: true});
 }
 
+// 投稿全体を取得
 function getPosts(_target, _query) {
   const target = _target || document.getElementById('contentArea');
   const query = _query || POST_QUERY;
@@ -31,15 +32,16 @@ function getPosts(_target, _query) {
   return [].slice.call(posts);
 }
 
+// 投稿からテキストを取得
 function getMessageFromPost(post) {
   const messages = post.querySelectorAll(MESSAGE_QUERY);
   return [].slice.call(messages).reduce((acc, message) => {
-    console.log(message, message.innerHTML);
-    return acc + message.innerHTML
+    return acc + message.textContent
   }, '');
 
 }
 
+// 投稿から画像を取得
 function getImagesFromPost(post) {
   const images = post.querySelectorAll(IMAGE_QUERY);
   return [].slice.call(images).map(e => ({
@@ -48,20 +50,34 @@ function getImagesFromPost(post) {
   }));
 }
 
+// 投稿から画像/テキストどちらも取得して返す
+function getBoth(post) {
+  const message = getMessageFromPost(post);
+  const image = getImagesFromPost(post);
+  return {
+    message,
+    image,
+  };
+}
+
+function sleep(msec) {
+  return new Promise(function(resolve) {
+    setTimeout(function() {resolve()}, msec);
+  })
+}
 
 (function () {
-  console.log('Hello, friend.');
   const posts = getPosts();
-  // console.log(posts);
-  const messages = posts.map(post => getMessageFromPost(post));
-  const images = posts.map(post => getImagesFromPost(post));
-  console.log(messages, images);
-
-  getFetchedPosts(function(list) {
-    const messages = list.map(post => getMessageFromPost(post));
-    const images = list.map(post => getImagesFromPost(post));
-    console.log(messages, images);
+  const first = posts.map(getBoth);
+  console.log('初回分');
+  console.log(first);
+  getFetchedPosts(async function(list) {
+    await sleep(600);
+    const added = list.map(post => getBoth(post));
+    console.log('追加読み込み分');
+    console.log(added);
   })
+
 })();
 
 

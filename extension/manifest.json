@@ -7,10 +7,16 @@
     "48": "images/icon_48.png",
     "128": "images/icon_128.png"
   },
-  "content_scripts": [{
-    "matches": ["https://www.facebook.com/*"],
-    "js": ["app.js"]
-  }],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.facebook.com/*"
+      ],
+      "js": [
+        "app.js"
+      ]
+    }
+  ],
   "background": {
     "scripts": [
       "background.js"
@@ -27,6 +33,11 @@
     "https://www.facebook.com/",
     "https://*/",
     "background",
-    "unlimitedStorage"
-  ]
+    "unlimitedStorage",
+    "storage"
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  }
 }

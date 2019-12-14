@@ -1,11 +1,16 @@
 import zenhan
 import re
+import emoji
 
 class Preprocess():
     def exec(self, sentence):
         sentence = zenhan.z2h(sentence, mode=3)
+        sentence = self._remove_emoji(sentence)
         sentence = self._normalize_re(sentence)
         return sentence.replace("\n\n", "\n").replace("!", "")
+
+    def _remove_emoji(self, sentence):
+        return ''.join(c for c in sentence if c not in emoji.UNICODE_EMOJI)
     
     def _normalize_re(self, sentence):
         # urlを削除
@@ -29,6 +34,7 @@ if __name__ == "__main__":
     #熊本城マラソン2020
     #熊本
     #手が冷たい
+    (｀ヘ´) 🤗⭕🤓🤔🤘🦁⭐🆗🆖🈲🤐🤗🤖🤑🆙⏩
 
     #朝ラン久しぶり
     """

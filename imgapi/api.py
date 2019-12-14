@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import hashlib
-from . import create_image
+from create_image import *
 
 app = Flask(__name__)
 CORS(app)

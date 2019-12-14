@@ -40,14 +40,14 @@ class create_image:
 
 	def smile(self,objs):
 		if 'スマイル' in objs:
-			print('スマイル')
+			#print('スマイル')
 			return 'smile'
 		return ''
 
 	def table(self,objs):
 		#if 'テーブル' in objs:
 		if '座ってる' in objs:
-			print('座ってる')
+			#print('座ってる')
 			return 'table'
 		return ''
 

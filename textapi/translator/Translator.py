@@ -24,6 +24,7 @@ class Translator:
         o = codecs.open("result/summarize.txt", "w", "utf-8")
 
         for i, post in enumerate(posts, start=0):
+            print(i)
             result_dic = self.translate(post)
             # テキスト出力
             output = ""
@@ -35,4 +36,4 @@ class Translator:
 
 if __name__ == '__main__':
     t = Translator()
-    t.translate_file("data/sample_for_test.txt", sep="<split>\n")
+    t.translate_file("data/sample.txt", sep="<split>\n")

@@ -1,4 +1,6 @@
 import codecs
+import random
+
 from translator.KeyPhraseExtractor import KeyPharaseExtractor
 from translator.Preprocess import Preprocess
 from translator.GoogleExtractor import GoogleExtractor
@@ -21,8 +23,10 @@ class Translator:
         return self.choiceOne(sentence_dic)
     
     def choiceOne(self, sentence_dic):
-        return sentence_dic['key']
-
+        """
+        ランダムで１つ返す
+        """
+        return random.choice([v for k, v in sentence_dic.items()])
 
     def translate_file(self, filename="", sep="\n"):
         with codecs.open(filename, "r", "utf-8") as f:
@@ -42,4 +46,5 @@ class Translator:
 
 if __name__ == '__main__':
     t = Translator()
-    t.translate_file("data/sample.txt", sep="<split>\n")
+    t.translate("今日の天気は晴れです．")
+    #t.translate_file("data/sample.txt", sep="<split>\n")

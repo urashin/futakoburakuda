@@ -1,7 +1,6 @@
 import nltk
 import pke
 import ginza
-import nltk
 from GoogleApiClient import GoogleApiClient
 from model.Entity import Entity
 from model.Phrase import Phrase
@@ -9,7 +8,6 @@ from model.Phrase import Phrase
 class KeyPharaseExtractor:
     def __init__(self, ex_type="multi"):
         ## pkeを使うための初期化処理
-        nltk.download('stopwords')
         pke.base.ISO_to_language['ja_ginza'] = 'japanese'
         stopwords = list(ginza.STOP_WORDS)
         nltk.corpus.stopwords.words_org = nltk.corpus.stopwords.words

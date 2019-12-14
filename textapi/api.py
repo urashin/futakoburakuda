@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import werkzeug
 from flask_cors import CORS
+from translator.Translator import Translator
 
 app = Flask(__name__)
 CORS(app)
@@ -14,8 +15,10 @@ def transform():
     print(text)
 
     # テキストデータを変換する処理
+    trans = Translator()
+    translated_text = trans.translate(text)
 
-    return jsonify({"text": text})
+    return jsonify({"text": translated_text})
 
 
 @app.errorhandler(werkzeug.exceptions.BadRequest)

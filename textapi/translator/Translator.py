@@ -28,20 +28,23 @@ class Translator:
         """
         return random.choice([v for k, v in sentence_dic.items()])
 
-    def translate_file(self, filename="", sep="\n"):
+    def translate_file(self, filename, output, sep="\n"):
         with codecs.open(filename, "r", "utf-8") as f:
             posts = f.read().rstrip(sep).split(sep)
-        o = codecs.open("result/summarize.txt", "w", "utf-8")
+        o = codecs.open(output, "w", "utf-8")
 
         for i, post in enumerate(posts, start=0):
             print(i)
-            result_dic = self.translate(post)
+            result_dic, results = self.translate(post, "jk")
             # テキスト出力
             output = ""
             output += "sentence_id: {}\n".format(i)
             output += "--sentence--\n{}------------\n".format(post)
-            output += "summarize\n"
+            output += "--choiced--\n"
             output += "{}\n".format(result_dic)
+            output += "--candidates--\n"
+            for k, v in results.items():
+                output += "method:{}:{}\n".format(k, v)
             o.write(output + "==========\n\n")
 
 if __name__ == '__main__':

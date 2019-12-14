@@ -1,13 +1,14 @@
 import random
+from translator.model.Result import Result
 
 jk_dic = {
     "positive": {
-    "high": ["{} 最 ＆ 高", "{} 沸いたーー！！", "{} わっしょい!", "{} ドチャクソ最高！", "{} あげぽよ〜", "{}まじ卍", "{}\n卍卍卍卍卍卍", "{} すこすこのすこ！", "{} あげみざわ！", "{}！！ いい波乗ってんね〜〜！！！", "だいすきですっ！！！ {}！"],
+    "high": ["{} 最 ＆ 高", "{} 沸いたーー！！", "{} わっしょい!", "{} ドチャクソ最高！", "{} あげぽよ〜", "{}まじ卍", "{}\n卍卍卍卍卍卍", "{} すこすこのすこ！", "{} あげみざわ！", "{}！！ いい波乗ってんね〜〜！！！", "だいすきですっ！！！ {}！", "{}~~!!!!!!!!!!!"],
     "mid": ["{}、、、ありがとうなぁ、、、くうぅ、、、", "{} やばい（語彙力）", "{} めちゃよき！", "{} 、、、尊い", "{}卍", "{} ほんとすこ", "{}　あげみ", "{}\nあぁぁぁ……(語彙力)", "{}.....神....."],
     "low": ["{}好きンゴ", "{}、、、よき", "{}好き[定期]", "{}、、、すこ", "ふぁぼ {}", "{}、、、それな", "{} あげ"]
     },
     "negative": {
-        "high":["{} さげみざわ．．．"],
+        "high":["{} さげみざわ．．．", "{} さげみぽよ．．．ぴぇぇぇぇえん"],
         "mid": ["{} マジさげぽよ〜", "{}．．．ダメかも．．．"],
         "low": ["{} んもー", "{} ぴえん"]
         }
@@ -38,16 +39,15 @@ class SentenceCreater:
             return self.default_dic
     
     def _judege_tension(self, magnitude):
-        if magnitude >= 10:
+        if magnitude >= 3: 
             return "high"
-        elif magnitude >= 5:
+        elif magnitude >= 1:
             return "mid"
         else:
             return "low"
 
-    def create_sentence(self, phrase, mode, magnitude, isPositive=True):
+    def create_sentence(self, phrase, mode, tension, isPositive=True):
         dic = self._choice_dic(mode)
-        tension = self._judege_tension(magnitude)
 
         if isPositive:
             dic = dic["positive"][tension]
@@ -58,9 +58,6 @@ class SentenceCreater:
         return template.format(phrase)
     
     def _calc_magnitude(self, sentence_magnitude, entity_magnitude):
-        print("sentence:{}".format(sentence_magnitude))
-        print("entity:{}".format(entity_magnitude))
-
         if entity_magnitude == 0.0:
             return sentence_magnitude
         else:
@@ -70,5 +67,7 @@ class SentenceCreater:
         sentences_dic = {}
         for k, v in phrase.entity_dic.items():
             magnitude = self._calc_magnitude(phrase.magnitude, v.magnitude)
-            sentences_dic[k] = self.create_sentence(v.name, mode, magnitude, phrase.is_positive)
+            tension = self._judege_tension(magnitude)
+            summary = self.create_sentence(v.name, mode, tension, phrase.is_positive)
+            sentences_dic[k] = Result(magnitude, tension, phrase.is_positive, summary)
         return sentences_dic

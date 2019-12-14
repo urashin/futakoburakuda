@@ -13,8 +13,8 @@ def transform():
     print(url)
 
     alt = content['alt']
-    alt_str = parse_alt(alt)
-    print(alt_str)
+    alts = parse_alt(alt)
+    print(alts)
 
     file_path = generate_file_path(url)
     print(file_path)
@@ -27,8 +27,8 @@ def transform():
 
 def parse_alt(alt):
     print(alt)
-    alt_str = alt.replace("画像に含まれている可能性があるもの:", "")
-    return alt_str
+    alts = alt.replace("画像に含まれている可能性があるもの:", "").split('、')
+    return alts
 
 
 def generate_file_path(url):

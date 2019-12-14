@@ -46,8 +46,8 @@ class create_image:
 
 	def table(self,objs):
 		#if 'テーブル' in objs:
-		if '座ってる' in objs:
-			#print('座ってる' + str(objs))
+		if '座って' in objs:
+			#print('座って' + str(objs))
 			return 'table'
 		return ''
 
@@ -58,14 +58,13 @@ class create_image:
 
 	def standing(self,objs):
 		for obj in objs:
-			if '座ってる' in obj:
-				#print('座ってる' + str(objs))
+			if '座って' in obj:
+				#print('座って' + str(objs))
 				return 'sitting'
 		return 'standing'
 
 	def objects(self,objs):
 		pets= ['犬','猫']
-		#countables = ['食べ物','画面', '犬','猫']
 		countables = ['食べ物','画面']
 		middles = ['家', 'ビル', '木', '植物']
 		backgrounds1 = ['海', '山', '空', '屋外', '室内']

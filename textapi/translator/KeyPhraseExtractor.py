@@ -1,9 +1,9 @@
 import nltk
 import pke
 import ginza
-from GoogleApiClient import GoogleApiClient
-from model.Entity import Entity
-from model.Phrase import Phrase
+from translator.GoogleApiClient import GoogleApiClient
+from translator.model.Entity import Entity
+from translator.model.Phrase import Phrase
 
 class KeyPharaseExtractor:
     def __init__(self, ex_type="multi"):

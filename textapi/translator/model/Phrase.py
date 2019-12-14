@@ -9,9 +9,8 @@ class Phrase:
     magnitude: float
         感情の大きさ
     entity_dic: dic
-        key: entityの種類, value: 名前
+        key: entityの種類, value: GoogleのEntityクラス
     """
-
     def __init__(self, score, magnitude, entity):
         self.score = score
         self.magnitude = magnitude

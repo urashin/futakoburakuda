@@ -23,8 +23,7 @@ class Translator:
             posts = f.read().rstrip(sep).split(sep)
         o = codecs.open("result/summarize.txt", "w", "utf-8")
 
-        for i, post in enumerate(posts[15:], start=15):
-            print(i)
+        for i, post in enumerate(posts, start=0):
             result_dic = self.translate(post)
             # テキスト出力
             output = ""
@@ -33,7 +32,7 @@ class Translator:
             output += "summarize\n"
             output += "{}\n".format(result_dic)
             o.write(output + "==========\n\n")
-    
+
 if __name__ == '__main__':
     t = Translator()
-    t.translate_file("data/sample.txt", sep="<split>\n")
+    t.translate_file("data/sample_for_test.txt", sep="<split>\n")

@@ -6,6 +6,7 @@ from google.cloud.language import enums
 from google.cloud.language import types
 from enum import Enum
 from model.Phrase import Phrase
+from model.Entity import Entity
 
 class Result:
     """
@@ -57,12 +58,17 @@ class GoogleExtractor:
         """
         posi, negaの近い物だけ，entityを絞り込む
         """
+        entities = []
         if score >= 0:
             entities = [entity for entity in result.entities if entity.sentiment.score >= 0]
         else:
             entities = [entity for entity in result.entities if entity.sentiment.score < 0]
         
-        return entities 
+        if entities:
+            return entities
+        else:
+            # 同じ感情値のentityがなければ，とりあえずそのまま返す
+            return result.entities
 
     def _get_phrase(self, sentence):
         sentiment = self._sentence_posi_nega(sentence)
@@ -96,7 +102,9 @@ class GoogleExtractor:
         entity = {}
         if self.result.entities:
             salience_entity, pn_entity = self._get_top_entities()
-            entity = {"salience": salience_entity.name, "pn": pn_entity.name}
+            entity = {
+                "salience": Entity(salience_entity.name, salience_entity.sentiment.score, salience_entity.sentiment.magnitude),
+                "pn": Entity(pn_entity.name, pn_entity.sentiment.score, pn_entity.sentiment.magnitude)}
 
         return Phrase(self.result.score, self.result.magnitude, entity)
 

@@ -1,12 +1,21 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import hashlib
-import pathlib
+from pathlib import Path
 import os
 from create_image import *
 
 app = Flask(__name__)
+app.config["CLIENT_IMAGES"] = Path('./img').resolve()
 CORS(app)
+
+
+@app.route("/img/<image_name>", methods=["GET"])
+def get_image(image_name):
+    try:
+        return send_from_directory(app.config["CLIENT_IMAGES"], filename=image_name, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
 
 
 @app.route("/transform", methods=["POST"])

@@ -16,10 +16,10 @@ function fetchData(url = ``, data = {}) {
 }
 
 
-function postText(text) {
+function postText(text, filterMode) {
   const API = 'http://127.0.0.1:8080/transform';
   if(text) {
-    return fetchData(API, {text: text})
+    return fetchData(API, {text: text, filterMode: filterMode})
   }
 }
 
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener(
       // テキストの変換をする
       case "postText":
         if(data.text) {
-          postText(data.text).then(res => sendResponse(res));
+          postText(data.text, data.filterMode).then(res => sendResponse(res));
         }
         return true;
 

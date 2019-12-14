@@ -100,21 +100,26 @@ function changeImage(posts) {
 
 // backgroundにテキストPOST依頼を投げて返ってきた文字列でメッセージを入れ替える
 function changeText(posts) {
-  posts.forEach(item => {
-    const insert = (res) => {
-      if(res) {
-        const changed = res.text;
-        item.text.items.map(x => x.innerText = changed);
-      }
-    };
-    chrome.runtime.sendMessage(
-      { task: 'postText',
-        data: {
-          text: item.text.data,
+  chrome.storage.sync.get(['filterMode'], function (items) {
+    posts.forEach(item => {
+      const insert = (res) => {
+        if(res) {
+          const changed = res.text;
+          item.text.items.map(x => x.innerText = changed);
+        }
+      };
+
+      chrome.runtime.sendMessage(
+        { task: 'postText',
+          data: {
+            text: item.text.data,
+            filterMode: items.filterMode,
+          },
         },
-      },
-      insert
-    );
+        insert
+      );
+
+    });
   });
 }
 

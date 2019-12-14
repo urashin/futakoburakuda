@@ -1,5 +1,6 @@
 import codecs
 import random
+import numpy as np
 
 from translator.KeyPhraseExtractor import KeyPharaseExtractor
 from translator.Preprocess import Preprocess
@@ -24,10 +25,19 @@ class Translator:
     
     def choiceOne(self, sentence_dic):
         """
-        ランダムで１つ返す
+        magnitudeのスコアを重みとして，ランダムに選択する
+        すべてのスコアが0のときはランダムに1つ選択する
         """
-        return random.choice([v for k, v in sentence_dic.items()])
-    
+        d = [(v, v.magnitude_score) for k, v in sentence_dic.items()]
+        a, w = zip(*d)
+        if sum(w) == 0:
+            print(w)
+            return random.choice(a)
+        else:
+            w2 = np.array(w) / sum(w)
+            v = np.random.choice(a, p=w2)
+            return v
+        
     ###
     # For Test
     ###
@@ -46,7 +56,7 @@ class Translator:
             posts = f.read().rstrip(sep).split(sep)
         o = codecs.open(output, "w", "utf-8")
 
-        for i, post in enumerate(posts[:30], start=0):
+        for i, post in enumerate(posts[5:30], start=5):
             print(i)
             result_dic, candidates = self.translate_with_candidates(post, "jk")
             # テキスト出力

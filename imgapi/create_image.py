@@ -47,7 +47,7 @@ class create_image:
 	def table(self,objs):
 		#if 'テーブル' in objs:
 		if '座ってる' in objs:
-			#print('座ってる')
+			#print('座ってる' + str(objs))
 			return 'table'
 		return ''
 
@@ -59,6 +59,7 @@ class create_image:
 	def standing(self,objs):
 		for obj in objs:
 			if '座ってる' in obj:
+				#print('座ってる' + str(objs))
 				return 'sitting'
 		return 'standing'
 

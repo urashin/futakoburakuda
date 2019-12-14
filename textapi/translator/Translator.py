@@ -21,7 +21,8 @@ class Translator:
         key_phrase = self.key_extractor.get_phrase(post)
         sentence_dic.update(self.creater.create(key_phrase, type))
 
-        return self.choiceOne(sentence_dic)
+        result = self.choiceOne(sentence_dic)
+        return result.summary
     
     def choiceOne(self, sentence_dic):
         """

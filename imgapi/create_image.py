@@ -149,23 +149,32 @@ class create_image:
 		#backgrounds = ['海', '山', '空', '屋外', '室内']
 		bg1 = ['海', '山', '空']
 		name = ""
-		default ="images/white.png"
-		if len(objs) == 1:
-			name = f"images/{objs[0]}.png"
+		default ="images/default.png"
+		white = "images/white.png"
+		bgs = objs['objects']['backgrounds']
+		if len(bgs) == 1:
+			name = f"images/{bgs[0]}.png"
 			if not os.path.isfile(name):
 				name = default
-		elif len(objs) == 2:
-			name = f"{objs[0]}{objs[1]}.png"
+		elif len(bgs) == 2:
+			name = f"{bgs[0]}{bgs[1]}.png"
 			if not os.path.isfile(name):
-				name = f"{objs[1]}{objs[0]}.png"
+				name = f"{bgs[1]}{bgs[0]}.png"
 				if not os.path.isfile(name):
 					name = default
-		elif len(objs) == 3:
+		elif len(bgs) == 3:
 			name = 'images/海山空.png'
 			if not os.path.isfile(name):
 				name = default
-		else:
+		elif len(bgs) == 0:
 			name = default
+		if (len(objs['objects']['backgrounds']) == 0 and
+			(len(objs['objects']['middles']) != 0 or
+			len(objs['objects']['countables']) != 0 or
+			objs['persons']['num'] != '0' or
+			len(objs['objects']['pets']) != 0)):
+			name = white
+
 		base = cv2.imread(name)
 		return base
 
@@ -190,7 +199,7 @@ class create_image:
 
 	def obaka_merge(self,objs,file_path):
 		images = {}
-		base = self.draw_backgrounds(objs['objects']['backgrounds'])
+		base = self.draw_backgrounds(objs)
 
 		base = self.draw_images(objs['objects']['middles'], base, 0, 0)
 		base = self.draw_images(objs['objects']['countables'], base, 0, 0)

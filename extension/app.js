@@ -15,7 +15,7 @@ function getFetchedPosts(callback) {
   const target = document.querySelector(FETCHE_TARGET_QUERY).childNodes[2];
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
-      if(mutation.addedNodes.length) {
+      if (mutation.addedNodes.length) {
         const posts = [].slice.call(mutation.addedNodes)
           .map(e => getPosts(e, FETCHED_POST_QUERY))
           .filter(x => x.length)[0];
@@ -23,7 +23,7 @@ function getFetchedPosts(callback) {
       }
     })
   });
-  observer.observe(target, {childList: true, subtree: true});
+  observer.observe(target, { childList: true, subtree: true });
 }
 
 // 投稿全体を取得
@@ -38,7 +38,7 @@ function getPosts(_target, _query) {
 function getMessageFromPost(post) {
   const texts = post.querySelectorAll(MESSAGE_QUERY);
   const items = [].slice.call(texts).filter(x => !!x);
-  const data =  items.reduce((acc, texts) => {
+  const data = items.reduce((acc, texts) => {
     return acc + texts.textContent
   }, '');
   return {
@@ -51,7 +51,7 @@ function getMessageFromPost(post) {
 function getImagesFromPost(post) {
   const images = post.querySelectorAll(IMAGE_QUERY);
   const items = [].slice.call(images).filter(x => !!x);
-  const data =  items.map(e => ({
+  const data = items.map(e => ({
     url: e.src,
     alt: e.alt
   }));
@@ -74,8 +74,8 @@ function getBoth(post) {
 // sleep util function
 // Mutate検知後すぐだと要素が取れないので
 function sleep(msec) {
-  return new Promise(function(resolve) {
-    setTimeout(function() {resolve()}, msec);
+  return new Promise(function (resolve) {
+    setTimeout(function () { resolve() }, msec);
   })
 }
 
@@ -89,7 +89,8 @@ function changeImage(posts) {
     };
     item.image.data.forEach(data => {
       chrome.runtime.sendMessage(
-        { task: 'postImage',
+        {
+          task: 'postImage',
           data: data,
         },
         insert
@@ -102,13 +103,17 @@ function changeImage(posts) {
 function changeText(posts) {
   posts.forEach(item => {
     const insert = (res) => {
-      if(res) {
+      if (res) {
         const changed = res.text;
-        item.text.items.map(x => x.innerText = changed);
+        item.text.items.map(x => {
+          x.innerText = changed;
+          x.style.cssText = "font-size:40px";
+        });
       }
     };
     chrome.runtime.sendMessage(
-      { task: 'postText',
+      {
+        task: 'postText',
         data: {
           text: item.text.data,
         },
@@ -127,7 +132,7 @@ function changeText(posts) {
   changeText(first);
   changeImage(first);
 
-  getFetchedPosts(async function(list) {
+  getFetchedPosts(async function (list) {
     await sleep(600);
     const added = list.map(post => getBoth(post));
     console.log('追加読み込み分');

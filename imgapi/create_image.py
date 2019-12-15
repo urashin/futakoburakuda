@@ -67,7 +67,7 @@ class create_image:
 	def objects(self,objs):
 		pets= ['犬','猫']
 		countables = ['食べ物','画面']
-		middles = ['家', 'ビル', '木', '植物']
+		middles = ['家', 'ビル','高層ビル', '木', '植物']
 		backgrounds1 = ['海', '山', '空']
 		backgrounds2 = ['屋外', '室内']
 		objects = {'countables':[], 'pets':[], 'middles':[], 'backgrounds':[]}

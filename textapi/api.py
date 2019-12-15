@@ -15,6 +15,7 @@ def transform():
     filterMode = content['filterMode']
 
     print(text)
+    print("mode:{}".format(filterMode))
 
     # テキストデータを変換する処理
     trans = Translator()

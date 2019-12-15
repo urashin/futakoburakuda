@@ -1,5 +1,6 @@
 import random
 from translator.model.Result import Result
+from collections import defaultdict
 
 jk_dic = {
     "positive": {
@@ -45,12 +46,28 @@ class SentenceCreater:
     def __init__(self, ):
         self.jk_dic = jk_dic
         self.default_dic = default_dic
+        self.tomnishi_dic = tomnishi_dic
+        self.all_dic = self._make_all_dict()
+
+    def _make_all_dict(self,):
+        all_dic = {}
+        for k, v in default_dic.items():
+            tmp_dic = defaultdict(list)
+            for tension, default_templates in v.items():
+                tmp_dic[tension].extend(default_templates)
+                tmp_dic[tension].extend(self.jk_dic[k][tension])
+                tmp_dic[tension].extend(self.tomnishi_dic[k][tension])
+            all_dic[k] = tmp_dic
+
+        return all_dic
 
     def _choice_dic(self, mode):
         if mode == "jk":
             return self.jk_dic
         elif mode == "tomnishi":
             return self.tomnishi_dic
+        elif mode == "all":
+            return self.all_dic
         else:
             return self.default_dic
     
@@ -86,4 +103,5 @@ class SentenceCreater:
             tension = self._judege_tension(magnitude)
             summary = self.create_sentence(v.name, mode, tension, phrase.is_positive)
             sentences_dic[k] = Result(magnitude, tension, phrase.is_positive, summary)
+
         return sentences_dic

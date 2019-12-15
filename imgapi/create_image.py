@@ -46,9 +46,10 @@ class create_image:
 
 	def table(self,objs):
 		#if 'テーブル' in objs:
-		if '座って' in objs:
-			#print('座って' + str(objs))
-			return 'table'
+		for obj in objs:
+			if '座って' in obj:
+				#print('座って' + str(objs))
+				return 'table'
 		return ''
 
 	def up(self,objs):
@@ -67,7 +68,7 @@ class create_image:
 		pets= ['犬','猫']
 		countables = ['食べ物','画面']
 		middles = ['家', 'ビル', '木', '植物']
-		backgrounds1 = ['海', '山', '空', '屋外', '室内']
+		backgrounds1 = ['海', '山', '空']
 		backgrounds2 = ['屋外', '室内']
 		objects = {'countables':[], 'pets':[], 'middles':[], 'backgrounds':[]}
 		for obj in objs:
@@ -202,7 +203,7 @@ class create_image:
 		# alt text のパース
 		#images = self.analyze_list(tag_list)
 		images = self.analyze_list(tag_list)
-		#print(images)
+		print(images)
 
 		# merge 処理
 		self.obaka_merge(images,file_path)

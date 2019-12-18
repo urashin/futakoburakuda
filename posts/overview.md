@@ -11,7 +11,7 @@ Facebookの投稿を薄める拡張機能を作りました。
 ## 全体構成
 今回作成したプロダクトの全体構成は以下の図のような感じです。
 
-![全体構成 .png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/160829/5f7ce087-12ad-2248-908f-a922372c8a64.png)
+![全体構成.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/160829/5f7ce087-12ad-2248-908f-a922372c8a64.png)
 
 主な構成要素は以下の5つです。
 - Chrome Extension

@@ -21,7 +21,7 @@ Facebookの投稿を薄める拡張機能を作りました。
 - 画像生成ライブラリ
 
 ここからはそれぞれの要素について解説していきたいと思います。
-## Chrome extension
+## Chrome Extension
 Chrome Extensionでは以下を行います。
 - Facebookの友達が投稿したテキストと画像情報をDOMから取得する
 - パースした情報をテキスト変換API, 画像生成/配信APIに渡す
@@ -30,10 +30,17 @@ Chrome Extensionでは以下を行います。
 - 変換前の画像のパスを生成した画像のパスに置き換える
 
 ## 文章変換API
-文章変換APIでは、以下を行います。
 
-- 友達が投稿した文章データを文章変換ライブラリを使って変換する
-- 変換後の文章データをレスポンスとして返す
+文章変換APIは以下をおこなうとてもシンプルなREST APIです。
+- Chrome ExtensionからHTTPリクエストとして、友達が投稿した文章データを受け取る
+- HTTPリクエストとして受け取った文章データを、自作した文章変換ライブラリに渡して変換された文章データを取得する
+- 変換された文章データをHTTPレスポンスとしてChrome Extensionに返す
+
+自然言語処理周りのライブラリが豊富という点からPythonを利用することになったため、PythonのWebフレームワークである[Flask](https://github.com/pallets/flask)を用いて実装をおこないました。
+[Django](https://github.com/django/django)など別のWebフレームワークの選択肢もありましたが、実装を担当した自分がPythonの開発経験がほとんどなかったこと、APIとしてやりたいことがとてもシンプルだったことを考慮してより軽量なフレームワークを利用しました。
+
+ソースコードはGitHubで公開しているので、詳細は以下を参照してください。
+https://github.com/urashin/futakoburakuda/tree/master/textapi
 
 ## 画像生成/配信API
 画像生成/配信APIでは以下を行います。

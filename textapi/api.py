@@ -18,7 +18,7 @@ def transform():
 
     # テキストデータを変換する処理
     trans = Translator()
-    translated_text = trans.translate(text, type=filterMode)
+    translated_text = trans.translate(text, mode=filterMode)
     print(translated_text)
 
     if len(translated_text) == 0:

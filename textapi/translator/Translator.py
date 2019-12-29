@@ -1,6 +1,8 @@
 import codecs
 import random
 import numpy as np
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 
 from translator.KeyPhraseExtractor import KeyPharaseExtractor
 from translator.Preprocess import Preprocess
@@ -14,12 +16,12 @@ class Translator:
         self.preprocess = Preprocess()
         self.creater =  SentenceCreater()
 
-    def translate(self, post, type='default'):
+    def translate(self, post, mode='default'):
         post = self.preprocess.exec(post)
         google_phrase = self.google_extractor.get_phrase(post)
-        sentence_dic = self.creater.create(google_phrase, type)
+        sentence_dic = self.creater.create(google_phrase, mode)
         key_phrase = self.key_extractor.get_phrase(post)
-        sentence_dic.update(self.creater.create(key_phrase, type))
+        sentence_dic.update(self.creater.create(key_phrase, mode))
 
         result = self.choiceOne(sentence_dic)
         return result.summary
@@ -57,7 +59,7 @@ class Translator:
             posts = f.read().rstrip(sep).split(sep)
         o = codecs.open(output, "w", "utf-8")
 
-        for i, post in enumerate(posts[5:30], start=5):
+        for i, post in enumerate(posts):
             print(i)
             result_dic, candidates = self.translate_with_candidates(post, "jk")
             # テキスト出力
@@ -73,5 +75,6 @@ class Translator:
 
 if __name__ == '__main__':
     t = Translator()
-    t.translate("今日の天気は晴れです．")
-    #t.translate_file("data/sample.txt", sep="<split>\n")
+    print(t.translate("今日は美味しいラーメンを食べれてとても幸せでした．"))
+    # ファイルから読み込んで実行する場合
+    #t.translate_file("data/sample.txt", "result.txt", sep="<split>\n")

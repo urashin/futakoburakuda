@@ -1,5 +1,5 @@
 import six
-import sys, path, os
+import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 
 from translator.GoogleApiClient import GoogleApiClient

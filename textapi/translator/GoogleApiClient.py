@@ -37,3 +37,10 @@ class GoogleApiClient:
             encoding = enums.EncodingType.UTF16
 
         return self.client.analyze_entity_sentiment(document, encoding)
+
+if __name__ == '__main__':
+    sentence = "今日の天気は晴れです"
+    client = GoogleApiClient()
+
+    print(client.sentence_posi_nega(sentence))
+    print(client.entity_posi_nega(sentence))

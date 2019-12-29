@@ -1,5 +1,8 @@
 import random
-from translator.model.Result import Result
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+
+from translator.model import Result, Phrase, Entity
 
 jk_dic = {
     "positive": {
@@ -62,7 +65,7 @@ class SentenceCreater:
         else:
             return "low"
 
-    def create_sentence(self, phrase, mode, tension, isPositive=True):
+    def _create_sentence(self, phrase, mode, tension, isPositive=True):
         dic = self._choice_dic(mode)
 
         if isPositive:
@@ -84,6 +87,20 @@ class SentenceCreater:
         for k, v in phrase.entity_dic.items():
             magnitude = self._calc_magnitude(phrase.magnitude, v.magnitude)
             tension = self._judege_tension(magnitude)
-            summary = self.create_sentence(v.name, mode, tension, phrase.is_positive)
+            summary = self._create_sentence(v.name, mode, tension, phrase.is_positive)
             sentences_dic[k] = Result(magnitude, tension, phrase.is_positive, summary)
         return sentences_dic
+
+if __name__ == "__main__":
+    creator = SentenceCreater()
+    phrase_type = "key"
+    entity_dic = {
+        phrase_type: Entity("ラーメン", 0.0, 1.0)
+    }
+    phrase = Phrase(0.0, 0.0, entity_dic)
+    print("default")
+    print(creator.create(phrase, "default")[phrase_type])
+    print("jk")
+    print(creator.create(phrase, "jk")[phrase_type])
+    print("tomnish")
+    print(creator.create(phrase, "tomnish")[phrase_type])

@@ -1,10 +1,10 @@
-# Imports the Google Cloud client library
 import six
-import sys
+import sys, path, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+
 from translator.GoogleApiClient import GoogleApiClient
 from translator.model.Phrase import Phrase
 from translator.model.Entity import Entity
-
 
 class Result:
     """
@@ -23,7 +23,7 @@ class Result:
 
 class GoogleExtractor:
     """
-    GoogleのAPIを使ってフレーズと抽出する
+    Natural Language APIを使ってフレーズを抽出する
     """
 
     def __init__(self,):
@@ -32,7 +32,7 @@ class GoogleExtractor:
 
     def _ex_pharase_emotion(self, score, result):
         """
-        posi, negaの近い物だけ，entityを絞り込む
+        投稿文と同じ傾向の感情値(posi, negaが同じもの)だけ，entityを絞り込む
         """
         entities = []
         if score >= 0:

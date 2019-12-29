@@ -84,8 +84,6 @@ class KeyPharaseExtractor:
        phrase = self._filter_phrase(phrases)
        # 文章を抽出する
        sentence = self.extract_sentence(phrase, sentence)
-       print(sentence)
-       exit()
 
        # googleのAPIを叩いてポジネガ判定
        result = self.client.sentence_posi_nega(sentence)
@@ -95,14 +93,11 @@ class KeyPharaseExtractor:
 
 if __name__ == '__main__':
     sentence = """
-    おはようございます
-    手が冷たい午前5時
-    ハッシュタグで朝ランと打つと朝ラン久しぶりと予測変換
-    まあ当ってるから文句言えない
+    今日は美味しいラーメンを食べれて幸せでした．
     """
     k =KeyPharaseExtractor(ex_type="multi")
     phrase = k.get_phrase(sentence)
 
     print(phrase.score)
     print(phrase.magnitude)
-    print("{}".format(phrase.entity_dic))
+    print("{}".format(phrase.entity_dic["key"].name))

@@ -6,17 +6,19 @@ from translator.Translator import Translator
 app = Flask(__name__)
 CORS(app)
 
+trans = Translator()
 
 @app.route("/transform", methods=["POST"])
 def transform():
     content = request.json
     text = content['text']
+    filterMode = content['filterMode']
 
     print(text)
 
     # テキストデータを変換する処理
     trans = Translator()
-    translated_text = trans.translate(text)
+    translated_text = trans.translate(text, type=filterMode)
     print(translated_text)
 
     if len(translated_text) == 0:

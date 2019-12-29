@@ -1,6 +1,9 @@
 import nltk
 import pke
 import ginza
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+
 from translator.GoogleApiClient import GoogleApiClient
 from translator.model.Entity import Entity
 from translator.model.Phrase import Phrase
@@ -17,7 +20,10 @@ class KeyPharaseExtractor:
         self.ex_type = ex_type
         self.client = GoogleApiClient()
     
-    def create_extractor(self, sentence):
+    def _create_extractor(self, sentence):
+        """
+        pkeのExtractorを切り替える
+        """
         if self.ex_type == "multi":
             extractor = pke.unsupervised.MultipartiteRank()
             extractor.load_document(input=sentence, language='ja_ginza', normalization=None)
@@ -38,8 +44,10 @@ class KeyPharaseExtractor:
         else:
             raise TypeError("存在しないextractorを指定しています")
 
-    def get_phrases(self, sentence):
+    def _get_phrases(self, sentence):
         """
+        pkeを使ってキーフレーズ抽出を行う
+        
         returns
         -------
         result: List[Tuple(str, float)]
@@ -48,12 +56,12 @@ class KeyPharaseExtractor:
         """
         try:
             # extractorにテキストをロードさせる
-            extractor = self.create_extractor(sentence)
+            extractor = self._create_extractor(sentence)
             return extractor.get_n_best(n=10)
         except ValueError:
             return [(sentence, 0.0)]
     
-    def filter_phrase(self, phrases):
+    def _filter_phrase(self, phrases):
         """
         フレーズの中から最もらしいものを抜き出す処理
         """
@@ -72,20 +80,28 @@ class KeyPharaseExtractor:
 
     def get_phrase(self, sentence):
        # キーフレーズ抽出
-       phrases = self.get_phrases(sentence) 
-       phrase = self.filter_phrase(phrases)
+       phrases = self._get_phrases(sentence) 
+       phrase = self._filter_phrase(phrases)
        # 文章を抽出する
        sentence = self.extract_sentence(phrase, sentence)
+       print(sentence)
+       exit()
 
-       # googleのAPIを叩いてポジネが判定
+       # googleのAPIを叩いてポジネガ判定
        result = self.client.sentence_posi_nega(sentence)
        entity_dic = {"key": Entity(phrase, 0.0, 0.0)}
 
        return Phrase(result.score, result.magnitude, entity_dic)
 
 if __name__ == '__main__':
+    sentence = """
+    おはようございます
+    手が冷たい午前5時
+    ハッシュタグで朝ランと打つと朝ラン久しぶりと予測変換
+    まあ当ってるから文句言えない
+    """
     k =KeyPharaseExtractor(ex_type="multi")
-    phrase = k.get_phrase("パンおいしい")
+    phrase = k.get_phrase(sentence)
 
     print(phrase.score)
     print(phrase.magnitude)

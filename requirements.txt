@@ -1,4 +1,4 @@
-Flask==1.1.1
+Flask==2.3.2
 Flask-Cors==3.0.8
 appnope==0.1.0
 backcall==0.1.0
